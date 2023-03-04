@@ -95,7 +95,13 @@ const current = asyncHandler (async(req, res) => {
 // @route GET /api/users/current
 // @access Private
 const getUsers = asyncHandler (async(req, res) => {
-    const users = await User.find()
+    const result = await User.find()
+    const users = result.map(user => {
+        const obj = user.toObject()
+        delete obj['password']
+        delete obj['__v']
+        return obj
+    })
     res.status(200).json(users)
 });
 
